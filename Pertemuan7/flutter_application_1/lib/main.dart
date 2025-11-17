@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'pages/daftar_mahasiswa.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'dart:io';
+import 'dart:io' show Platform; // aman, selama dilindungi kIsWeb
+import 'package:flutter/foundation.dart'; // untuk kIsWeb
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   if (isDesktopPlatform()) {
     // Inisialisasi untuk desktop (Windows, macOS, atau Linux)
     sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi; // Inisialisasi databaseFactory
+    databaseFactory = databaseFactoryFfi;
   }
+
   runApp(const MyApp());
 }
 
 bool isDesktopPlatform() {
+  // Jika web → langsung false (menghindari error Platform)
+  if (kIsWeb) return false;
+
   return Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 }
 
@@ -28,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
       ),
-      home: const DaftarMahasiswaPage(), // Halaman utama adalah daftar mahasiswa
+      home: const DaftarMahasiswaPage(),
     );
   }
-} 
+}

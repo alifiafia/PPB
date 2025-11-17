@@ -284,8 +284,20 @@ class _FormMahasiswaPageState extends State<FormMahasiswaPage> {
           type: StepperType.vertical,
           currentStep: _currentStep,
           steps: steps,
-          onStepContinue: _simpan,
-          onStepCancel: null,
+          // onStepContinue: _simpan,
+          // onStepCancel: null,
+          onStepContinue: () {
+              if (_currentStep == steps.length - 1) {
+                _simpan();
+              } else {
+                setState(() => _currentStep++);
+              }
+            },
+            onStepCancel: () {
+              if (_currentStep > 0) {
+                setState(() => _currentStep--);
+              }
+            },
           controlsBuilder: (context, details) {
             return Row(
               children: [
